@@ -41,10 +41,6 @@
     <Reference Include="Cgen.Audio">
       <HintPath>P:\Libraries\Cgen.Audio-0.2-src\Cgen.Audio\bin\Release\Cgen.Audio.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio, Version=1.7.0.15, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\opentkutil\Source\OpenTKUtil\OpenTKUtil\bin\Release\NAudio.dll</HintPath>
-    </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
     <Reference Include="OpenTKUtil">
       <HintPath>..\..\..\..\GitHub\OpenTKUtil\Source\OpenTKUtil\OpenTKUtil\bin\Release\OpenTKUtil.dll</HintPath>
