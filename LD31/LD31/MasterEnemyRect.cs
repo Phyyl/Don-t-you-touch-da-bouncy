@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace LD31
 {
-	public class MasterEnemyRect : EnemyRect
+	public class MasterEnemyRect : BaseEnemyRect
 	{
 		public MasterEnemyRect(float x, float y, float width, float height)
 			: base(x, y, width, height)

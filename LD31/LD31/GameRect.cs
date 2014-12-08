@@ -12,10 +12,14 @@ namespace LD31
 {
 	public abstract class GameRect
 	{
+		public delegate void HitWallEventHandler(GameRect rect, Direction wall);
+
 		public Vector2 Center;
 		public Vector2 Size;
 		public Color Color;
 		public float Speed;
+
+		public event HitWallEventHandler OnHitWall;
 
 		public RectangleF Rectangle
 		{
@@ -44,22 +48,30 @@ namespace LD31
 			{
 				Center.X = halfSize.X;
 				HitLeft();
+				if (OnHitWall != null)
+					OnHitWall(this, Direction.Left);
 			}
 			else if (Center.X > Game.Instance.ClientSize.X - halfSize.X)
 			{
 				Center.X = Game.Instance.ClientSize.X - halfSize.X;
 				HitRight();
+				if (OnHitWall != null)
+					OnHitWall(this, Direction.Right);
 			}
 
 			if (Center.Y < halfSize.Y)
 			{
 				Center.Y = halfSize.Y;
 				HitTop();
+				if (OnHitWall != null)
+					OnHitWall(this, Direction.Up);
 			}
 			else if (Center.Y > Game.Instance.ClientSize.Y - halfSize.Y)
 			{
 				Center.Y = Game.Instance.ClientSize.Y - halfSize.Y;
 				HitBottom();
+				if (OnHitWall != null)
+					OnHitWall(this, Direction.Down);
 			}
 		}
 

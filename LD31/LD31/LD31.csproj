@@ -38,12 +38,16 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAudio, Version=1.7.0.15, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\opentkutil\Source\OpenTKUtil\OpenTKUtil\bin\Release\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
     <Reference Include="OpenTKUtil">
       <HintPath>..\..\..\..\GitHub\OpenTKUtil\Source\OpenTKUtil\OpenTKUtil\bin\Release\OpenTKUtil.dll</HintPath>
     </Reference>
     <Reference Include="QuickFont">
-      <HintPath>D:\Programming\Libraries\QuickFont\QuickFont\bin\Release\QuickFont.dll</HintPath>
+      <HintPath>P:\Libraries\QuickFont\QuickFont\bin\Release\QuickFont.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -56,11 +60,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Direction.cs" />
+    <Compile Include="BaseEnemyRect.cs" />
     <Compile Include="EnemyRect.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameRect.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="HitParticle.cs" />
     <Compile Include="MasterEnemyRect.cs" />
+    <Compile Include="Particle.cs" />
+    <Compile Include="ParticlePool.cs" />
     <Compile Include="PlayerRect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -71,13 +79,37 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\bounce.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\bounce2.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\bounce3.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\bounce4.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\die.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\donttouchdabouncy.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\dotNetFx45_Full_setup.exe">
+    <Content Include="dotNetFx45_Full_setup.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\pause.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\play.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\unpause.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

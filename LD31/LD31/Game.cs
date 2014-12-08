@@ -6,6 +6,7 @@ using QuickFont;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,17 +15,40 @@ namespace LD31
 {
 	public class Game : BaseGame
 	{
+		private const int initialShake = 20;
+		private const float shakeLength = 10;
+
+		private Sound[] bounceSounds;
+		private Sound pauseSound;
+		private Sound unpauseSound;
+		private Sound dieSound;
+		private Sound playSound;
+
+		private QFont default_font_16;
+		private QFont default_font_25;
+		private int record;
+
 		public Random Random = new Random();
+
 		public PlayerRect PlayerRectangle;
+		public MasterEnemyRect MasterEnemy;
+		public List<EnemyRect> Rectangles = new List<EnemyRect>();
+		public ParticlePool Particles = new ParticlePool();
 
-		List<GameRect> rectangles = new List<GameRect>();
-		List<GameRect> tempRectangles = new List<GameRect>();
-
-		QFont default_font_16;
-		QFont default_font_25;
-
-		public int Points = 0;
+		private int points = 0;
+		public int Points
+		{
+			get { return points; }
+			set
+			{
+				points = value;
+				if (points > record)
+					record = points;
+			}
+		}
 		public GameState State = GameState.None;
+
+		private int shakeAmount;
 
 		public Game()
 			: base(true)
@@ -35,8 +59,11 @@ namespace LD31
 
 			Width = 500;
 			Height = 500;
-			CenterWindow();
 			WindowBorder = OpenTK.WindowBorder.Fixed;
+			Title = "Don't you touch da bouncy";
+			Icon = new Icon("Resources/donttouchdabouncy.ico");
+
+			CenterWindow();
 		}
 
 		void Game_Load(object sender, EventArgs e)
@@ -44,38 +71,54 @@ namespace LD31
 			default_font_16 = new QFont("Resources/Perfect DOS VGA 437 Win.ttf", 16, FontStyle.Regular);
 			default_font_25 = new QFont("Resources/Perfect DOS VGA 437 Win.ttf", 25, FontStyle.Regular);
 
-			GenerateGameStart();
+			bounceSounds = new Sound[]
+			{
+				Sound.LoadFromWaveFile("Resources/bounce.wav"),
+				Sound.LoadFromWaveFile("Resources/bounce2.wav"),
+				Sound.LoadFromWaveFile("Resources/bounce3.wav"),
+				Sound.LoadFromWaveFile("Resources/bounce4.wav"),
+			};
 
-			Title = "Don't you touch da bouncy";
-			Icon = new Icon("Resources/donttouchdabouncy.ico");
+			pauseSound = Sound.LoadFromWaveFile("Resources/pause.wav");
+			unpauseSound = Sound.LoadFromWaveFile("Resources/unpause.wav");
+			dieSound = Sound.LoadFromWaveFile("Resources/die.wav");
+			playSound = Sound.LoadFromWaveFile("Resources/play.wav");
 		}
 
 		void Game_UpdateFrame(object sender, FrameEventArgs e)
 		{
+			if (Input.NewKey(Key.Delete))
+			{
+				record = 0;
+				SaveRecordPoints();
+			}
+
 			switch (State)
 			{
 				case GameState.Playing:
 					{
 						PlayerRectangle.Update();
-						foreach (var rect in rectangles)
+						MasterEnemy.Update();
+						Particles.Update();
+						foreach (var rect in Rectangles)
 						{
 							rect.Update();
 							if (rect.Rectangle.IntersectsWith(PlayerRectangle.Rectangle))
 							{
-								State = GameState.GameOver;
+								EndGame();
+								break;
 							}
 						}
 
-						foreach (var rect in tempRectangles)
+						if (MasterEnemy.Rectangle.IntersectsWith(PlayerRectangle.Rectangle))
 						{
-							rectangles.Add(rect);
+							EndGame();
 						}
-
-						tempRectangles.Clear();
 
 						if (Input.NewKey(Key.Escape))
 						{
 							State = GameState.Paused;
+							pauseSound.Play();
 						}
 					}
 					break;
@@ -84,6 +127,7 @@ namespace LD31
 						if (Input.NewKey(Key.Escape))
 						{
 							State = GameState.Playing;
+							unpauseSound.Play();
 						}
 					}
 					break;
@@ -93,6 +137,7 @@ namespace LD31
 						{
 							State = GameState.Playing;
 							GenerateGameStart();
+							dieSound.Play();
 						}
 					}
 					break;
@@ -111,25 +156,44 @@ namespace LD31
 		void Game_RenderFrame(object sender, FrameEventArgs e)
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit);
+
+#if DEBUG
+			RenderString(Particles.Particles.Count.ToString(), new Vector2(5, 25), Vector2.Zero, default_font_16);
+#endif
+			
 			GL.Disable(EnableCap.Lighting);
 			GL.Disable(EnableCap.Texture2D);
+
 
 			switch (State)
 			{
 				case GameState.Playing:
 					{
-						foreach (var rect in rectangles)
+						GL.PushMatrix();
 						{
-							rect.Render();
+							if (shakeAmount > 0)
+							{
+								Vector2 shakeVector = new Vector2((float)Random.NextDouble(), (float)Random.NextDouble()).Normalized() * ((float)shakeAmount / initialShake * shakeLength);
+								GL.Translate(new Vector3(shakeVector));
+								shakeAmount--;
+							}
+							Particles.Render();
+							foreach (var rect in Rectangles)
+							{
+								rect.Render();
+							}
+							PlayerRectangle.Render();
+							MasterEnemy.Render();
 						}
-						PlayerRectangle.Render();
+						GL.PopMatrix();
+
 						RenderPoints();
 					}
 					break;
 				case GameState.Paused:
 					{
 						RenderPoints();
-						RenderStringCentered("Paused (Escape to resume)", ClientCenter,default_font_25);
+						RenderStringCentered("Paused (Escape to resume)", ClientCenter, default_font_25);
 					}
 					break;
 				case GameState.GameOver:
@@ -150,7 +214,7 @@ namespace LD31
 
 		void RenderPoints()
 		{
-			RenderString(Points.ToString(), new Vector2(5), Vector2.Zero, default_font_16);
+			RenderString(string.Format("{0} ({1} record)", Points, record), new Vector2(5), Vector2.Zero, default_font_16);
 		}
 
 		void RenderCredits()
@@ -161,24 +225,47 @@ namespace LD31
 
 		void GenerateGameStart()
 		{
-			rectangles.Clear();
-			tempRectangles.Clear();
-
-			rectangles.Add(new MasterEnemyRect(
-				Random.Next(100, Width - 200),
-				Random.Next(100, Height - 200),
-				20, 20));
-
+			Rectangles.Clear();
+			Particles.Clear();
+			MasterEnemy = new MasterEnemyRect(
+				Random.Next(20, Width - 40),
+				Random.Next(20, Height - 40),
+				20, 20);
 			PlayerRectangle = new PlayerRect(15, 15);
-
 			Points = 0;
+
+			LoadRecordPoints();
+			MasterEnemy.OnHitWall += MasterEnemy_OnHitWall;
+			MasterEnemy.OnHitWall += Enemy_OnHitWall;
+
+			playSound.Play();
+		}
+
+		void EndGame()
+		{
+			State = GameState.GameOver;
+			SaveRecordPoints();
+		}
+
+		void MasterEnemy_OnHitWall(GameRect rect, Direction wall)
+		{
+			Shake();
+			bounceSounds[Random.Next(bounceSounds.Length)].Play();
+		}
+
+		void Enemy_OnHitWall(GameRect rect, Direction wall)
+		{
+			for (int i = 0; i < 50; i++)
+			{
+				Particles.Add(new HitParticle(rect.Center, 3, 50, 10, wall));
+			}
 		}
 
 		public void AddRandomEnemyAt(float x, float y)
 		{
-			tempRectangles.Add(new EnemyRect(
-				x, y,
-				15, 15));
+			var newEnemeny = new EnemyRect(x, y, 15, 15);
+			newEnemeny.OnHitWall += Enemy_OnHitWall;
+			Rectangles.Add(newEnemeny);
 		}
 
 		public Vector2 MesureString(string str, QFont font)
@@ -196,7 +283,36 @@ namespace LD31
 
 		public void RenderStringCentered(string str, Vector2 position, QFont font)
 		{
-			RenderString(str, position, MesureString(str,font) / 2,font);
+			RenderString(str, position, MesureString(str, font) / 2, font);
+		}
+
+		private void Shake()
+		{
+			shakeAmount = initialShake;
+		}
+
+		private void LoadRecordPoints()
+		{
+			try
+			{
+				var reader = new BinaryReader(File.OpenRead("data.dat"));
+				int read = reader.ReadInt32();
+				if (read > record)
+					record = read;
+				reader.Close();
+			}
+			catch { }
+		}
+
+		private void SaveRecordPoints()
+		{
+			try
+			{
+				var writer = new BinaryWriter(File.OpenWrite("data.dat"));
+				writer.Write(record);
+				writer.Close();
+			}
+			catch { }
 		}
 
 		public static Game Instance;
@@ -204,11 +320,6 @@ namespace LD31
 		{
 			Instance = new Game();
 			Instance.Run(60);
-		}
-
-		public void AddRect(GameRect gameRect)
-		{
-			tempRectangles.Add(gameRect);
 		}
 	}
 }
