@@ -1,14 +1,18 @@
-﻿using OpenTK;
+﻿using Cgen.Audio;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using OpenTKUtil.Minimal;
 using QuickFont;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LD31
@@ -71,18 +75,20 @@ namespace LD31
 			default_font_16 = new QFont("Resources/Perfect DOS VGA 437 Win.ttf", 16, FontStyle.Regular);
 			default_font_25 = new QFont("Resources/Perfect DOS VGA 437 Win.ttf", 25, FontStyle.Regular);
 
+			SoundSystem.Instance().Init();
+
 			bounceSounds = new Sound[]
 			{
-				Sound.LoadFromWaveFile("Resources/bounce.wav"),
-				Sound.LoadFromWaveFile("Resources/bounce2.wav"),
-				Sound.LoadFromWaveFile("Resources/bounce3.wav"),
-				Sound.LoadFromWaveFile("Resources/bounce4.wav"),
+				new Sound("bounce","Resources/bounce.wav"),
+				new Sound("bounce2","Resources/bounce2.wav"),
+				new Sound("bounce3","Resources/bounce3.wav"),
+				new Sound("bounce4","Resources/bounce4.wav")
 			};
 
-			pauseSound = Sound.LoadFromWaveFile("Resources/pause.wav");
-			unpauseSound = Sound.LoadFromWaveFile("Resources/unpause.wav");
-			dieSound = Sound.LoadFromWaveFile("Resources/die.wav");
-			playSound = Sound.LoadFromWaveFile("Resources/play.wav");
+			pauseSound = new Sound("pause", "Resources/pause.wav");
+			unpauseSound = new Sound("unpause", "Resources/unpause.wav");
+			dieSound = new Sound("die", "Resources/die.wav");
+			playSound = new Sound("play", "Resources/play.wav");
 		}
 
 		void Game_UpdateFrame(object sender, FrameEventArgs e)
@@ -115,7 +121,7 @@ namespace LD31
 							EndGame();
 						}
 
-						if (Input.NewKey(Key.Escape))
+						if (Input.Key(Key.Escape))
 						{
 							State = GameState.Paused;
 							pauseSound.Play();
@@ -124,7 +130,7 @@ namespace LD31
 					break;
 				case GameState.Paused:
 					{
-						if (Input.NewKey(Key.Escape))
+						if (Input.Key(Key.Escape))
 						{
 							State = GameState.Playing;
 							unpauseSound.Play();
@@ -157,10 +163,6 @@ namespace LD31
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
-#if DEBUG
-			RenderString(Particles.Particles.Count.ToString(), new Vector2(5, 25), Vector2.Zero, default_font_16);
-#endif
-			
 			GL.Disable(EnableCap.Lighting);
 			GL.Disable(EnableCap.Texture2D);
 
@@ -257,7 +259,7 @@ namespace LD31
 		{
 			for (int i = 0; i < 50; i++)
 			{
-				Particles.Add(new HitParticle(rect.Center, 3, 50, 10, wall));
+				Particles.Add(new HitParticle(rect.Center, 3, 30, 10, wall));
 			}
 		}
 
@@ -318,8 +320,21 @@ namespace LD31
 		public static Game Instance;
 		static void Main(string[] args)
 		{
-			Instance = new Game();
-			Instance.Run(60);
+			try
+			{
+				Instance = new Game();
+				Debug.WriteLine(DateTime.Now.ToString());
+				Instance.Run(60);
+			}
+			catch (Exception ex)
+			{
+				File.WriteAllLines(GetFileName() + ".log", new string[] { ex.Message, ex.StackTrace });
+			}
+		}
+
+		static string GetFileName()
+		{
+			return DateTime.Now.ToString().Replace(':', '-');
 		}
 	}
 }

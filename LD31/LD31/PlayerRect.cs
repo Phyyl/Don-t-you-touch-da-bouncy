@@ -20,10 +20,10 @@ namespace LD31
 
 		public override void Update()
 		{
-			bool leftKey = Input.Key(Key.Left);
-			bool rightKey = Input.Key(Key.Right);
-			bool upKey = Input.Key(Key.Up);
-			bool downKey = Input.Key(Key.Down);
+			bool leftKey = Input.Key(Key.Left) | Input.Key(Key.A);
+			bool rightKey = Input.Key(Key.Right) | Input.Key(Key.D);
+			bool upKey = Input.Key(Key.Up) | Input.Key(Key.W);
+			bool downKey = Input.Key(Key.Down) | Input.Key(Key.S);
 
 			Vector2 movement = new Vector2();
 
