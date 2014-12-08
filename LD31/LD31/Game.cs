@@ -72,8 +72,8 @@ namespace LD31
 
 		void Game_Load(object sender, EventArgs e)
 		{
-			default_font_16 = new QFont("Resources/Perfect DOS VGA 437 Win.ttf", 16, FontStyle.Regular);
-			default_font_25 = new QFont("Resources/Perfect DOS VGA 437 Win.ttf", 25, FontStyle.Regular);
+			default_font_16 = new QFont("Resources/Perfect DOS VGA 437.ttf", 16, FontStyle.Regular);
+			default_font_25 = new QFont("Resources/Perfect DOS VGA 437.ttf", 25, FontStyle.Regular);
 
 			SoundSystem.Instance().Init();
 

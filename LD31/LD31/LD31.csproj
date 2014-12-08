@@ -76,6 +76,9 @@
     <None Include="Resources\Perfect DOS VGA 437 Win.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\Perfect DOS VGA 437.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Installers\dotNetFx45_Full_setup.exe">
