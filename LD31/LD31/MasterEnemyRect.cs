@@ -19,29 +19,29 @@ namespace LD31
 		public override void HitLeft()
 		{
 			base.HitLeft();
-			Game.Instance.AddRandomEnemyAt(Center.X, Center.Y);
-			Game.Instance.Points += 2;
+			Game.Instance.Game_Screen.AddRandomEnemyAt(Center.X, Center.Y);
+			Game.Instance.Game_Screen.Points += 2;
 		}
 
 		public override void HitRight()
 		{
 			base.HitRight();
-			Game.Instance.AddRandomEnemyAt(Center.X, Center.Y);
-			Game.Instance.Points += 2;
+			Game.Instance.Game_Screen.AddRandomEnemyAt(Center.X, Center.Y);
+			Game.Instance.Game_Screen.Points += 2;
 		}
 
 		public override void HitTop()
 		{
 			base.HitTop();
-			Game.Instance.AddRandomEnemyAt(Center.X, Center.Y);
-			Game.Instance.Points += 2;
+			Game.Instance.Game_Screen.AddRandomEnemyAt(Center.X, Center.Y);
+			Game.Instance.Game_Screen.Points += 2;
 		}
 
 		public override void HitBottom()
 		{
 			base.HitBottom();
-			Game.Instance.AddRandomEnemyAt(Center.X, Center.Y);
-			Game.Instance.Points += 2;
+			Game.Instance.Game_Screen.AddRandomEnemyAt(Center.X, Center.Y);
+			Game.Instance.Game_Screen.Points += 2;
 		}
 	}
 }

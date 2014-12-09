@@ -61,15 +61,24 @@
     <Compile Include="Direction.cs" />
     <Compile Include="BaseEnemyRect.cs" />
     <Compile Include="EnemyRect.cs" />
+    <Compile Include="Fonts.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameOverSreen.cs" />
     <Compile Include="GameRect.cs" />
+    <Compile Include="GameScreen.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="HitParticle.cs" />
     <Compile Include="MasterEnemyRect.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="MenuScreen.cs" />
     <Compile Include="Particle.cs" />
     <Compile Include="ParticlePool.cs" />
+    <Compile Include="PauseScreen.cs" />
     <Compile Include="PlayerRect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rand.cs" />
+    <Compile Include="Screen.cs" />
+    <Compile Include="Sounds.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -81,6 +90,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Cgen.Audio.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Installers\dotNetFx45_Full_setup.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -111,13 +126,10 @@
     <Content Include="Readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\pause.wav">
+    <Content Include="Resources\bip.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\play.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\unpause.wav">
+    <Content Include="Resources\bop.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="wrap_oal.dll">

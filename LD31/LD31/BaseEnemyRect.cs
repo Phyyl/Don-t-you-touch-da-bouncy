@@ -21,23 +21,23 @@ namespace LD31
 
 		protected void RandomizeDirection()
 		{
-			Direction = new Vector2((float)Game.Instance.Random.NextDouble() - 0.5f, (float)Game.Instance.Random.NextDouble() - 0.5f);
+			Direction = new Vector2(Rand.NextFloat() - 0.5f, Rand.NextFloat() - 0.5f);
 		}
 
 		public override void Update()
 		{
 			Center += Direction.Normalized() * Speed;
 
-			byte r = (byte)(Game.Instance.Random.Next() % 256);
+			byte r = (byte)(Rand.Next() % 256);
 			byte g = 0;
 			byte b = 0;
 			if (r < 255)
 			{
-				g = (byte)(Game.Instance.Random.Next(256 - r));
+				g = (byte)(Rand.Next(256 - r));
 
 				if ((g + r) < 255)
 				{
-					b = (byte)(Game.Instance.Random.Next(256 - g - r));
+					b = (byte)(Rand.Next(256 - g - r));
 				}
 			}
 
@@ -48,28 +48,28 @@ namespace LD31
 		{
 			RandomizeDirection();
 			Direction.X = Math.Abs(Direction.X);
-			Game.Instance.Points += 1;
+			Game.Instance.Game_Screen.Points += 1;
 		}
 
 		public override void HitRight()
 		{
 			RandomizeDirection();
 			Direction.X = -Math.Abs(Direction.X);
-			Game.Instance.Points += 1;
+			Game.Instance.Game_Screen.Points += 1;
 		}
 
 		public override void HitTop()
 		{
 			RandomizeDirection();
 			Direction.Y = Math.Abs(Direction.Y);
-			Game.Instance.Points += 1;
+			Game.Instance.Game_Screen.Points += 1;
 		}
 
 		public override void HitBottom()
 		{
 			RandomizeDirection();
 			Direction.Y = -Math.Abs(Direction.Y);
-			Game.Instance.Points += 1;
+			Game.Instance.Game_Screen.Points += 1;
 		}
 	}
 }

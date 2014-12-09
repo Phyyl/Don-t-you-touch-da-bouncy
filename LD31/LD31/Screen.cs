@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace LD31
 {
-	public enum GameState
+	public abstract class Screen
 	{
-		Menu,
-		Playing,
-		Paused,
-		GameOver
+		public abstract void Update();
+		public abstract void Render();
 	}
 }

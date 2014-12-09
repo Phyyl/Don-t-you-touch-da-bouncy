@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,22 @@ namespace LD31
 		public void Clear()
 		{
 			Particles.Clear();
+		}
+
+		public void GenerateExplosion(Vector2 center, int count, float size, float length, float speed, Direction direction)
+		{
+			for (int i = 0; i < count; i++)
+			{
+				Particles.Add(new HitParticle(center, 3, 30, 10, direction));
+			}
+		}
+
+		public void GenerateExplosion(Vector2 center, int count, float size, float length, float speed)
+		{
+			for (int i = 0; i < count; i++)
+			{
+				Particles.Add(new HitParticle(center, 3, 30, 10));
+			}
 		}
 	}
 }

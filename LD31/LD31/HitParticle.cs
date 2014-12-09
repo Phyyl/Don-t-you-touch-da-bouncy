@@ -15,9 +15,8 @@ namespace LD31
 		public float Size;
 
 		public HitParticle(Vector2 center, float size, float length, float speed, Direction direction)
-			: base(center, new Vector2((float)Game.Instance.Random.NextDouble() - 0.5f, (float)Game.Instance.Random.NextDouble() - 0.5f) * speed, length)
+			: this(center, size, length, speed)
 		{
-			Size = size;
 			switch (direction)
 			{
 				case LD31.Direction.Right:
@@ -33,7 +32,14 @@ namespace LD31
 					Direction.Y = Math.Abs(Direction.Y);
 					break;
 			}
-			Direction = Direction.Normalized() * (float)(Game.Instance.Random.NextDouble()+0.5f);
+			Direction = Direction.Normalized() * (Rand.NextFloat() + 0.5f);
+		}
+
+		public HitParticle(Vector2 center, float size, float length, float speed)
+			: base(center, new Vector2(Rand.NextFloat() - 0.5f, Rand.NextFloat() - 0.5f) * speed, length)
+		{
+			Size = size;
+			Direction = Direction.Normalized() * (Rand.NextFloat() + 0.5f);
 		}
 
 		public override void Render()

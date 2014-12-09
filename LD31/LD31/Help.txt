@@ -1,0 +1,11 @@
+If the game doesn't launch, pleasemake sure the .Net Framework 4.5 is installed,
+if you're not sure about this, there's an installer file in the Installers folder.
+
+The game requires OpenAL too, so make to install that as well. The installer
+file is also in the Installers folder.
+
+If none of these solutions work, please send the .log files to : Phyyl@live.ca.
+Make sure to included a brief description of your system's specifications and
+operating system to help me debug better!
+
+Don't forget to have fun :)
