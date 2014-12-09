@@ -126,6 +126,7 @@ namespace LD31
 		void EndGame()
 		{
 			Game.Instance.SetState(GameState.GameOver);
+			Sounds.Play("die");
 			SaveRecordPoints();
 		}
 

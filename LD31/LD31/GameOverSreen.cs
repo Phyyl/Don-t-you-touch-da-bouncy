@@ -15,7 +15,6 @@ namespace LD31
 			if (Input.NewKey(Key.Enter))
 			{
 				Game.Instance.SetState(GameState.Menu);
-				Sounds.Play("die");
 			}
 		}
 
