@@ -94,12 +94,6 @@ namespace LD31
 			Fonts.RenderString(string.Format("{0} ({1} record)", Points, record), new Vector2(5), Vector2.Zero, "pdos16");
 		}
 
-		public void RenderCredits()
-		{
-			string text = "Made by Philippe Pare for #LD31";
-			Fonts.RenderString(text, Game.Instance.ClientSize, Fonts.MesureString(text, "pdos16") + new Vector2(5), "pdos16");
-		}
-
 		private void Shake()
 		{
 			shakeAmount = initialShake;

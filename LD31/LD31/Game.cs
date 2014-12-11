@@ -82,6 +82,12 @@ namespace LD31
 				CurrentScreen.Render();
 		}
 
+		public void RenderCredits()
+		{
+			string text = "Made by Philippe Pare for #LD31";
+			Fonts.RenderString(text, Game.Instance.ClientSize, Fonts.MesureString(text, "pdos16") + new Vector2(5), "pdos16");
+		}
+
 		public static Game Instance;
 		static void Main(string[] args)
 		{
