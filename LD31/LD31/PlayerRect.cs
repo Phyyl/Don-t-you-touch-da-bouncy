@@ -12,18 +12,27 @@ namespace LD31
 {
 	public class PlayerRect : GameRect
 	{
-		public PlayerRect(float width, float height)
-			: base(Game.Instance.ClientCenter.X, Game.Instance.ClientCenter.Y, width, height, 3, Color.Green)
+		public enum PlayerInputMode
 		{
+			WASD = 1, Arrows = 2
+		}
 
+		private PlayerInputMode playerInputMode;
+
+		public PlayerRect(PlayerInputMode playerInputMode)
+			: base(Game.Instance.ClientCenter.X, Game.Instance.ClientCenter.Y, 15, 15, 3, Color.Green)
+		{
+			this.playerInputMode = playerInputMode;
 		}
 
 		public override void Update()
 		{
-			bool leftKey = Input.Key(Key.Left) | Input.Key(Key.A);
-			bool rightKey = Input.Key(Key.Right) | Input.Key(Key.D);
-			bool upKey = Input.Key(Key.Up) | Input.Key(Key.W);
-			bool downKey = Input.Key(Key.Down) | Input.Key(Key.S);
+			bool wasd = (playerInputMode & PlayerInputMode.WASD) == PlayerInputMode.WASD;
+			bool arrows = (playerInputMode & PlayerInputMode.Arrows) == PlayerInputMode.Arrows;
+			bool leftKey = (Input.Key(Key.Left) && arrows) | (Input.Key(Key.A) && wasd);
+			bool rightKey = (Input.Key(Key.Right) && arrows) | (Input.Key(Key.D) && wasd);
+			bool upKey = (Input.Key(Key.Up) && arrows) | (Input.Key(Key.W) && wasd);
+			bool downKey = (Input.Key(Key.Down) && arrows) | (Input.Key(Key.S) && wasd);
 
 			Vector2 movement = new Vector2();
 

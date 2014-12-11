@@ -10,6 +10,9 @@ namespace LD31
 {
 	public class GameOverSreen : Screen
 	{
+		public const string DefaultText = "Game over! (Press Enter)";
+		public string Text = DefaultText;
+
 		public override void Update()
 		{
 			if (Input.NewKey(Key.Enter))
@@ -21,8 +24,8 @@ namespace LD31
 		public override void Render()
 		{
 			Game.Instance.Game_Screen.RenderPoints();
-			Fonts.RenderStringCentered("Game over! (Press Enter)", Game.Instance.ClientCenter, "pdos25");
-			Game.Instance.Game_Screen.RenderCredits();
+			Fonts.RenderStringCentered(Text, Game.Instance.ClientCenter, "pdos25");
+			Game.Instance.RenderCredits();
 		}
 	}
 }

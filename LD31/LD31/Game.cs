@@ -84,7 +84,9 @@ namespace LD31
 
 		public void RenderCredits()
 		{
-			string text = "Made by Philippe Pare for #LD31";
+			string text = "This is not the #LD31 version";
+			Fonts.RenderString(text, Game.Instance.ClientSize - new Vector2(0, 25), Fonts.MesureString(text, "pdos16") + new Vector2(5), "pdos16");
+			text = "Made by Philippe Pare for #LD31";
 			Fonts.RenderString(text, Game.Instance.ClientSize, Fonts.MesureString(text, "pdos16") + new Vector2(5), "pdos16");
 		}
 

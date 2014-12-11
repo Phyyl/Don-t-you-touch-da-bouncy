@@ -37,6 +37,7 @@ namespace LD31
 			}
 		}
 
+		protected string saveFile = "single.dat";
 
 		public override void Update()
 		{
@@ -46,7 +47,7 @@ namespace LD31
 			foreach (var rect in Rectangles)
 			{
 				rect.Update();
-				if (rect.Rectangle.IntersectsWith(PlayerRectangle.Rectangle))
+				if (CheckPlayerCollisions(rect))
 				{
 					EndGame();
 					break;
@@ -77,16 +78,21 @@ namespace LD31
 					shakeAmount--;
 				}
 				Particles.Render();
-				foreach (var rect in Rectangles)
-				{
-					rect.Render();
-				}
-				PlayerRectangle.Render();
-				MasterEnemy.Render();
+				RenderRects();
 			}
 			GL.PopMatrix();
 
 			RenderPoints();
+		}
+
+		protected virtual void RenderRects()
+		{
+			foreach (var rect in Rectangles)
+			{
+				rect.Render();
+			}
+			PlayerRectangle.Render();
+			MasterEnemy.Render();
 		}
 
 		public void RenderPoints()
@@ -99,7 +105,7 @@ namespace LD31
 			shakeAmount = initialShake;
 		}
 
-		public void Reset()
+		public virtual void Reset()
 		{
 			Rectangles.Clear();
 			Particles.Clear();
@@ -107,21 +113,26 @@ namespace LD31
 				Rand.Next(20, Game.Instance.Width - 40),
 				Rand.Next(20, Game.Instance.Height - 40),
 				20, 20);
-			PlayerRectangle = new PlayerRect(15, 15);
+			PlayerRectangle = new PlayerRect(PlayerRect.PlayerInputMode.Arrows|PlayerRect.PlayerInputMode.WASD);
 			Points = 0;
 
-			LoadRecordPoints();
+			LoadPointsToFile();
 			MasterEnemy.OnHitWall += MasterEnemy_OnHitWall;
 			MasterEnemy.OnHitWall += Enemy_OnHitWall;
 
 			Sounds.Play("play");
 		}
 
-		void EndGame()
+		protected virtual bool CheckPlayerCollisions(EnemyRect rect)
+		{
+			return rect.Rectangle.IntersectsWith(PlayerRectangle.Rectangle);
+		}
+
+		protected void EndGame()
 		{
 			Game.Instance.SetState(GameState.GameOver);
 			Sounds.Play("die");
-			SaveRecordPoints();
+			SavePointsToFile();
 		}
 
 		public void AddRandomEnemyAt(float x, float y)
@@ -142,11 +153,11 @@ namespace LD31
 			Particles.GenerateExplosion(rect.Center, 50, 3, 30, 10, wall);
 		}
 
-		private void LoadRecordPoints()
+		private void LoadPointsToFile()
 		{
 			try
 			{
-				var reader = new BinaryReader(File.OpenRead("data.dat"));
+				var reader = new BinaryReader(File.OpenRead(saveFile));
 				int read = reader.ReadInt32();
 				if (read > record)
 					record = read;
@@ -155,11 +166,11 @@ namespace LD31
 			catch { }
 		}
 
-		private void SaveRecordPoints()
+		private void SavePointsToFile()
 		{
 			try
 			{
-				var writer = new BinaryWriter(File.OpenWrite("data.dat"));
+				var writer = new BinaryWriter(File.OpenWrite(saveFile));
 				writer.Write(record);
 				writer.Close();
 			}

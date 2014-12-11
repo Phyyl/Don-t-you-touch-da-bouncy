@@ -71,6 +71,7 @@
     <Compile Include="MasterEnemyRect.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="MenuScreen.cs" />
+    <Compile Include="MultiplayerGameScreen.cs" />
     <Compile Include="Particle.cs" />
     <Compile Include="ParticlePool.cs" />
     <Compile Include="PauseScreen.cs" />

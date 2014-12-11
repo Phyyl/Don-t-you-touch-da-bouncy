@@ -54,7 +54,7 @@ namespace LD31
 			menu.Render();
 			GL.Disable(EnableCap.Texture2D);
 			particles.Render();
-			Game.Instance.Game_Screen.RenderCredits();
+			Game.Instance.RenderCredits();
 		}
 	}
 }
