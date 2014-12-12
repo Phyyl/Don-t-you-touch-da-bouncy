@@ -21,7 +21,7 @@ namespace LD31
 
 		public PlayerRect PlayerRectangle;
 		public MasterEnemyRect MasterEnemy;
-		public List<EnemyRect> Rectangles = new List<EnemyRect>();
+		public List<BaseEnemyRect> Rectangles = new List<BaseEnemyRect>();
 		public ParticlePool Particles = new ParticlePool();
 
 		private int shakeAmount;
@@ -58,7 +58,7 @@ namespace LD31
 				}
 			}
 
-			if (MasterEnemy.Rectangle.IntersectsWith(PlayerRectangle.Rectangle))
+			if (CheckPlayerCollisions(MasterEnemy))
 			{
 				EndGame();
 			}
@@ -123,7 +123,7 @@ namespace LD31
 				Rand.Next(20, Game.Instance.Height - 40),
 				20, 20);
 			PlayerRectangle = new PlayerRect(PlayerRect.PlayerInputMode.Arrows|PlayerRect.PlayerInputMode.WASD);
-			Points = 1000;
+			Points = 0;
 
 			LoadPointsToFile();
 			MasterEnemy.OnHitWall += MasterEnemy_OnHitWall;
@@ -132,7 +132,7 @@ namespace LD31
 			Sounds.Play("play");
 		}
 
-		protected virtual bool CheckPlayerCollisions(EnemyRect rect)
+		protected virtual bool CheckPlayerCollisions(BaseEnemyRect rect)
 		{
 			return rect.Rectangle.IntersectsWith(PlayerRectangle.Rectangle);
 		}

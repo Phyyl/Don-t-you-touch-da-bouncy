@@ -55,7 +55,7 @@ namespace LD31
 			Player2Rectangle.Render();
 		}
 
-		protected override bool CheckPlayerCollisions(EnemyRect rect)
+		protected override bool CheckPlayerCollisions(BaseEnemyRect rect)
 		{
 			return base.CheckPlayerCollisions(rect) || Player2Rectangle.Rectangle.IntersectsWith(rect.Rectangle);
 		}
