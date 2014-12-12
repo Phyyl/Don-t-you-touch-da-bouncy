@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -10,16 +11,21 @@ namespace LD31
 {
 	public class MultiplayerGameScreen : GameScreen
 	{
+		public const string SaveFile = "multi.dat";
 		public PlayerRect Player2Rectangle;
 
 		public MultiplayerGameScreen()
 		{
-			saveFile = "multi.dat";
+			saveFile = SaveFile;
 		}
 
 		public override void Update()
 		{
 			Player2Rectangle.Update();
+			if (Player2Rectangle.Rectangle.IntersectsWith(PlayerRectangle.Rectangle))
+			{
+				EndGame();
+			}
 			base.Update();
 		}
 
@@ -37,6 +43,11 @@ namespace LD31
 				Color = Color.Blue
 			};
 			PlayerRectangle = new PlayerRect(PlayerRect.PlayerInputMode.WASD);
+
+			Vector2 centerScreen = Game.Instance.ClientCenter;
+
+			Player2Rectangle.Center = centerScreen + new Vector2(centerScreen.X / 2, 0);
+			PlayerRectangle.Center = centerScreen - new Vector2(centerScreen.X / 2, 0);
 		}
 
 		protected override void RenderRects()

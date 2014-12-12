@@ -9,8 +9,10 @@ namespace LD31
 	public enum GameState
 	{
 		Menu,
-		Playing,
+		PlayingSingle,
+		PlayingMulti,
 		Paused,
-		GameOver
+		GameOver,
+		HowTo
 	}
 }

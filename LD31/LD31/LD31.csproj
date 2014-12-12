@@ -68,6 +68,7 @@
     <Compile Include="GameScreen.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="HitParticle.cs" />
+    <Compile Include="HowToScreen.cs" />
     <Compile Include="MasterEnemyRect.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="MenuScreen.cs" />

@@ -16,6 +16,7 @@ namespace LD31
 		private const int initialShake = 20;
 		private const float shakeLength = 10;
 		private static readonly string[] bounceSounds = new string[] { "bounce", "bounce2", "bounce3", "bounce4" };
+		public const string SaveFile = "single.dat";
 
 		public PlayerRect PlayerRectangle;
 		public MasterEnemyRect MasterEnemy;
@@ -37,7 +38,7 @@ namespace LD31
 			}
 		}
 
-		protected string saveFile = "single.dat";
+		protected string saveFile = SaveFile;
 
 		public override void Update()
 		{

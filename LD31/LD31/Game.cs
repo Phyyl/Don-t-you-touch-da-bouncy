@@ -23,8 +23,11 @@ namespace LD31
 		public MenuScreen Menu_Screen;
 		public GameOverSreen GameOver_Screen;
 		public PauseScreen Pause_Screen;
+		public HowToScreen HowTo_Screen;
 
 		public Screen CurrentScreen;
+
+		private GameState pausedState;
 
 		public Game()
 			: base(true)
@@ -64,6 +67,7 @@ namespace LD31
 			Menu_Screen = new MenuScreen();
 			GameOver_Screen = new GameOverSreen();
 			Pause_Screen = new PauseScreen();
+			HowTo_Screen = new HowToScreen();
 
 			SetState(GameState.Menu);
 		}
@@ -105,14 +109,21 @@ namespace LD31
 			}
 		}
 
-		public void SetState(GameState gameState)
+		public void SetState(GameState gameState, bool unpause = false)
 		{
 			switch (gameState)
 			{
 				case GameState.Menu:
 					CurrentScreen = Menu_Screen;
 					break;
-				case GameState.Playing:
+				case GameState.PlayingSingle:
+					if (unpause && !(Game_Screen is GameScreen))
+						Game_Screen = new GameScreen();
+					CurrentScreen = Game_Screen;
+					break;
+				case GameState.PlayingMulti:
+					if (!(Game_Screen is MultiplayerGameScreen))
+						Game_Screen = new MultiplayerGameScreen();
 					CurrentScreen = Game_Screen;
 					break;
 				case GameState.Paused:
@@ -121,7 +132,20 @@ namespace LD31
 				case GameState.GameOver:
 					CurrentScreen = GameOver_Screen;
 					break;
+				case GameState.HowTo:
+					CurrentScreen = HowTo_Screen;
+					break;
 			}
+		}
+
+		public void ResetGame()
+		{
+			Game_Screen.Reset();
+		}
+
+		public void ResumeGame()
+		{
+			CurrentScreen = Game_Screen;
 		}
 	}
 }

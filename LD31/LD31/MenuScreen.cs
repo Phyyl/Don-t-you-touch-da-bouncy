@@ -18,7 +18,7 @@ namespace LD31
 
 		public MenuScreen()
 		{
-			menu = new Menu("Play", "Exit");
+			menu = new Menu("Singleplayer", "Multiplayer","How To", "Exit");
 			menu.OnMenuItemSelected += menu_OnMenuItemSelected;
 
 			particles = new ParticlePool();
@@ -29,10 +29,17 @@ namespace LD31
 			switch (index)
 			{
 				case 0:
-					Game.Instance.Game_Screen.Reset();
-					Game.Instance.SetState(GameState.Playing);
+					Game.Instance.SetState(GameState.PlayingSingle);
+					Game.Instance.ResetGame();
 					break;
 				case 1:
+					Game.Instance.SetState(GameState.PlayingMulti);
+					Game.Instance.ResetGame();
+					break;
+				case 2:
+					Game.Instance.SetState(GameState.HowTo);
+					break;
+				case 3:
 					Game.Instance.Close();
 					break;
 			}

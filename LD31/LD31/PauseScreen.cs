@@ -24,7 +24,7 @@ namespace LD31
 			switch (index)
 			{
 				case 0:
-					Game.Instance.SetState(GameState.Playing);
+					Game.Instance.ResumeGame();
 					break;
 				case 1:
 					Game.Instance.SetState(GameState.Menu);
