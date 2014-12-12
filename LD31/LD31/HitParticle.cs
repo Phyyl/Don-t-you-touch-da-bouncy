@@ -12,7 +12,14 @@ namespace LD31
 {
 	public class HitParticle : Particle
 	{
+		private const int minR = 200;
+		private const int maxR = 256;
+		private const int minG = 100;
+		private const int maxG = 156;
+		
 		public float Size;
+
+		private byte R, G;
 
 		public HitParticle(Vector2 center, float size, float length, float speed, Direction direction)
 			: this(center, size, length, speed)
@@ -32,19 +39,28 @@ namespace LD31
 					Direction.Y = Math.Abs(Direction.Y);
 					break;
 			}
-			Direction = Direction.Normalized() * (Rand.NextFloat() + 0.5f);
+			FixDirection(speed);
 		}
 
 		public HitParticle(Vector2 center, float size, float length, float speed)
-			: base(center, new Vector2(Rand.NextFloat() - 0.5f, Rand.NextFloat() - 0.5f) * speed, length)
+			: base(center, new Vector2(Rand.NextFloat() - 0.5f, Rand.NextFloat() - 0.5f), length)
 		{
 			Size = size;
-			Direction = Direction.Normalized() * (Rand.NextFloat() + 0.5f);
+			FixDirection(speed);
+			Direction = Direction.Normalized() * (Rand.NextFloat() + 0.5f) * speed * (Rand.NextFloat() + 0.5f);
+
+			R = (byte)Rand.Next(minR, maxR);
+			G = (byte)Rand.Next(minG, maxG);
+		}
+
+		private void FixDirection(float speed)
+		{
+			Direction = Direction.Normalized() * (Rand.NextFloat() + 0.5f) * speed * (Rand.NextFloat() + 0.5f);
 		}
 
 		public override void Render()
 		{
-			GL.Color4((byte)255, (byte)127, (byte)0, (byte)((Life / LifeLength) * 255));
+			GL.Color4(R, G, (byte)0, (byte)((Life / LifeLength) * 255));
 			(new RectangleF(Position.X - Size / 2, Position.Y - Size / 2, Size, Size)).Render();
 		}
 	}

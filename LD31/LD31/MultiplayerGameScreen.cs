@@ -11,12 +11,11 @@ namespace LD31
 {
 	public class MultiplayerGameScreen : GameScreen
 	{
-		public const string SaveFile = "multi.dat";
 		public PlayerRect Player2Rectangle;
 
 		public MultiplayerGameScreen()
 		{
-			saveFile = SaveFile;
+			saveFile = "multi.dat";
 		}
 
 		public override void Update()

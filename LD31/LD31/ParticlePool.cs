@@ -42,7 +42,7 @@ namespace LD31
 		{
 			for (int i = 0; i < count; i++)
 			{
-				Particles.Add(new HitParticle(center, 3, 30, 10, direction));
+				Particles.Add(new HitParticle(center, 3, 30, 1, direction));
 			}
 		}
 
@@ -50,7 +50,7 @@ namespace LD31
 		{
 			for (int i = 0; i < count; i++)
 			{
-				Particles.Add(new HitParticle(center, 3, 30, 10));
+				Particles.Add(new HitParticle(center, 3, 30, 1));
 			}
 		}
 	}

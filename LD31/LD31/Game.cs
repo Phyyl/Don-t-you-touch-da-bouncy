@@ -1,5 +1,6 @@
 ﻿using Cgen.Audio;
 using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using OpenTKUtil.Minimal;
@@ -27,10 +28,8 @@ namespace LD31
 
 		public Screen CurrentScreen;
 
-		private GameState pausedState;
-
 		public Game()
-			: base(true)
+			: base(true, CreateGraphicsMode())
 		{
 			Load += Game_Load;
 			UpdateFrame += Game_UpdateFrame;
@@ -146,6 +145,11 @@ namespace LD31
 		public void ResumeGame()
 		{
 			CurrentScreen = Game_Screen;
+		}
+
+		private static GraphicsMode CreateGraphicsMode()
+		{
+			return new GraphicsMode(GraphicsMode.Default.ColorFormat,GraphicsMode.Default.Depth,GraphicsMode.Default.Stencil,16,GraphicsMode.Default.AccumulatorFormat,3,false);
 		}
 	}
 }

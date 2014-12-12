@@ -13,8 +13,9 @@ namespace LD31
 {
 	public class GameScreen : Screen
 	{
-		private const int initialShake = 20;
-		private const float shakeLength = 10;
+		private const int initialShake = 10;
+		private const int shakePer100 = 3;
+		private const float shakeLength = 7;
 		private static readonly string[] bounceSounds = new string[] { "bounce", "bounce2", "bounce3", "bounce4" };
 		public const string SaveFile = "single.dat";
 
@@ -26,7 +27,7 @@ namespace LD31
 		private int shakeAmount;
 
 		private int record;
-		private int points = 0;
+		private int points;
 		public int Points
 		{
 			get { return points; }
@@ -51,7 +52,9 @@ namespace LD31
 				if (CheckPlayerCollisions(rect))
 				{
 					EndGame();
+#if !DEBUG
 					break;
+#endif
 				}
 			}
 
@@ -74,7 +77,7 @@ namespace LD31
 			{
 				if (shakeAmount > 0)
 				{
-					Vector2 shakeVector = new Vector2((float)Rand.NextDouble(), (float)Rand.NextDouble()).Normalized() * ((float)shakeAmount / initialShake * shakeLength);
+					Vector2 shakeVector = new Vector2(Rand.NextFloat() - 0.5f, Rand.NextFloat() - 0.5f).Normalized() * ((float)shakeAmount / CalcInitialShake()) *  shakeLength;
 					GL.Translate(new Vector3(shakeVector));
 					shakeAmount--;
 				}
@@ -103,7 +106,12 @@ namespace LD31
 
 		private void Shake()
 		{
-			shakeAmount = initialShake;
+			shakeAmount = CalcInitialShake();
+		}
+
+		private int CalcInitialShake()
+		{
+			return initialShake + shakePer100 * (Points / 100);
 		}
 
 		public virtual void Reset()
@@ -115,7 +123,7 @@ namespace LD31
 				Rand.Next(20, Game.Instance.Height - 40),
 				20, 20);
 			PlayerRectangle = new PlayerRect(PlayerRect.PlayerInputMode.Arrows|PlayerRect.PlayerInputMode.WASD);
-			Points = 0;
+			Points = 1000;
 
 			LoadPointsToFile();
 			MasterEnemy.OnHitWall += MasterEnemy_OnHitWall;
@@ -131,9 +139,11 @@ namespace LD31
 
 		protected void EndGame()
 		{
+#if !DEBUG
 			Game.Instance.SetState(GameState.GameOver);
 			Sounds.Play("die");
 			SavePointsToFile();
+#endif
 		}
 
 		public void AddRandomEnemyAt(float x, float y)
