@@ -137,10 +137,11 @@ namespace LD31
 			return rect.Rectangle.IntersectsWith(PlayerRectangle.Rectangle);
 		}
 
-		protected void EndGame()
+		protected void EndGame(string message)
 		{
 #if !DEBUG
 			Game.Instance.SetState(GameState.GameOver);
+			Game.Instance.GameOver_Screen.Text = message;
 			Sounds.Play("die");
 			SavePointsToFile();
 #endif

@@ -23,7 +23,7 @@ namespace LD31
 			Player2Rectangle.Update();
 			if (Player2Rectangle.Rectangle.IntersectsWith(PlayerRectangle.Rectangle))
 			{
-				EndGame();
+				EndGame("You crashed into eachother!");
 			}
 			base.Update();
 		}

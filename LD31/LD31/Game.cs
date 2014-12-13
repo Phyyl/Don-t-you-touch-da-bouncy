@@ -121,7 +121,7 @@ namespace LD31
 					CurrentScreen = Game_Screen;
 					break;
 				case GameState.PlayingMulti:
-					if (!(Game_Screen is MultiplayerGameScreen))
+					if (unpause && !(Game_Screen is MultiplayerGameScreen))
 						Game_Screen = new MultiplayerGameScreen();
 					CurrentScreen = Game_Screen;
 					break;
@@ -129,7 +129,7 @@ namespace LD31
 					CurrentScreen = Pause_Screen;
 					break;
 				case GameState.GameOver:
-					CurrentScreen = GameOver_Screen;
+					CurrentScreen = new GameOverSreen();
 					break;
 				case GameState.HowTo:
 					CurrentScreen = HowTo_Screen;
