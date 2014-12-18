@@ -116,20 +116,24 @@ namespace LD31
 					CurrentScreen = Menu_Screen;
 					break;
 				case GameState.PlayingSingle:
-					if (unpause && !(Game_Screen is GameScreen))
+					if (!unpause)
+					{
 						Game_Screen = new GameScreen();
+					}
 					CurrentScreen = Game_Screen;
 					break;
 				case GameState.PlayingMulti:
-					if (unpause && !(Game_Screen is MultiplayerGameScreen))
+					if (!unpause)
+					{
 						Game_Screen = new MultiplayerGameScreen();
+					}
 					CurrentScreen = Game_Screen;
 					break;
 				case GameState.Paused:
 					CurrentScreen = Pause_Screen;
 					break;
 				case GameState.GameOver:
-					CurrentScreen = new GameOverSreen();
+					CurrentScreen = GameOver_Screen;
 					break;
 				case GameState.HowTo:
 					CurrentScreen = HowTo_Screen;

@@ -49,20 +49,11 @@ namespace LD31
 			foreach (var rect in Rectangles)
 			{
 				rect.Update();
-				if (CheckPlayerCollisions(rect))
-				{
-					EndGame();
-#if !DEBUG
-					break;
-#endif
-				}
 			}
-
-			if (CheckPlayerCollisions(MasterEnemy))
+			if (this is GameScreen && CheckPlayerCollisions(PlayerRectangle))
 			{
-				EndGame();
+				EndGame("You died! (Press enter)");
 			}
-
 			if (Input.NewKey(Key.Escape))
 			{
 				Game.Instance.SetState(GameState.Paused);
@@ -132,19 +123,25 @@ namespace LD31
 			Sounds.Play("play");
 		}
 
-		protected virtual bool CheckPlayerCollisions(BaseEnemyRect rect)
+		protected bool CheckPlayerCollisions(PlayerRect playerRect)
 		{
-			return rect.Rectangle.IntersectsWith(PlayerRectangle.Rectangle);
+			foreach (var rect in Rectangles)
+			{
+				rect.Update();
+				if (rect.Rectangle.IntersectsWith(playerRect.Rectangle))
+				{
+					return true;
+				}
+			}
+			return MasterEnemy.Rectangle.IntersectsWith(playerRect.Rectangle);
 		}
 
 		protected void EndGame(string message)
 		{
-#if !DEBUG
 			Game.Instance.SetState(GameState.GameOver);
 			Game.Instance.GameOver_Screen.Text = message;
 			Sounds.Play("die");
 			SavePointsToFile();
-#endif
 		}
 
 		public void AddRandomEnemyAt(float x, float y)

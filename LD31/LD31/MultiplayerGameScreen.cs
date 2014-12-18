@@ -21,11 +21,20 @@ namespace LD31
 		public override void Update()
 		{
 			Player2Rectangle.Update();
+			base.Update();
+
 			if (Player2Rectangle.Rectangle.IntersectsWith(PlayerRectangle.Rectangle))
 			{
-				EndGame("You crashed into eachother!");
+				EndGame("You crashed! (Press enter)");
 			}
-			base.Update();
+			else if (CheckPlayerCollisions(PlayerRectangle))
+			{
+				EndGame("Player1 died! (Press enter)");
+			}
+			else if (CheckPlayerCollisions(Player2Rectangle))
+			{
+				EndGame("Player2 died! (Press enter)");
+			}
 		}
 
 		public override void Render()
@@ -53,11 +62,6 @@ namespace LD31
 		{
 			base.RenderRects();
 			Player2Rectangle.Render();
-		}
-
-		protected override bool CheckPlayerCollisions(BaseEnemyRect rect)
-		{
-			return base.CheckPlayerCollisions(rect) || Player2Rectangle.Rectangle.IntersectsWith(rect.Rectangle);
 		}
 	}
 }

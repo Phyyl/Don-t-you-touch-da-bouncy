@@ -10,8 +10,7 @@ namespace LD31
 {
 	public class GameOverSreen : Screen
 	{
-		public const string DefaultText = "Game over! (Press Enter)";
-		public string Text = DefaultText;
+		public string Text = "";
 
 		public override void Update()
 		{
