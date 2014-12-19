@@ -127,7 +127,6 @@ namespace LD31
 		{
 			foreach (var rect in Rectangles)
 			{
-				rect.Update();
 				if (rect.Rectangle.IntersectsWith(playerRect.Rectangle))
 				{
 					return true;
